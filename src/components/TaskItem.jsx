@@ -4,7 +4,7 @@ function TaskItem({ task, deleteTask, toggleComplete, editTask }) {
   const [isEditing, setIsEditing] = useState(false);
   const [newText, setNewText] = useState(task.text);
 
-  const handleEditSubmit = () => {
+  const handleSave = () => {
     if (newText.trim()) {
       editTask(task.id, newText);
       setIsEditing(false);
@@ -20,22 +20,28 @@ function TaskItem({ task, deleteTask, toggleComplete, editTask }) {
       />
 
       {isEditing ? (
-        <input 
+        <input
           className="edit-input"
-          value={newText} 
-          onChange={(e) => setNewText(e.target.value)} 
-          onBlur={handleEditSubmit} // Saves if user clicks away
+          value={newText}
+          onChange={(e) => setNewText(e.target.value)}
         />
       ) : (
-        <span style={{ textDecoration: task.completed ? "line-through" : "none" }}>
+        <span
+          style={{
+            textDecoration: task.completed ? "line-through" : "none",
+          }}
+        >
           {task.text}
         </span>
       )}
 
       <div className="task-actions">
-        <button onClick={() => setIsEditing(!isEditing)}>
-          {isEditing ? "Save" : "Edit"}
-        </button>
+        {isEditing ? (
+          <button onClick={handleSave}>Save</button>
+        ) : (
+          <button onClick={() => setIsEditing(true)}>Edit</button>
+        )}
+
         <button onClick={() => deleteTask(task.id)}>Delete</button>
       </div>
     </div>
